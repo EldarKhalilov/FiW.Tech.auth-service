@@ -1,0 +1,126 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: Eldar Khalilov
+      changes:
+        - createTable:
+            tableName: customer
+            schemaName: public
+            columns:
+              - column:
+                  name: id
+                  type: UUID
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: email
+                  type: VARCHAR(255)
+              - column:
+                  name: password
+                  type: VARCHAR(255)
+              - column:
+                  name: created_at
+                  type: TIMESTAMP
+              - column:
+                  name: modified_at
+                  type: TIMESTAMP
+
+  - changeSet:
+      id: 2
+      author: Eldar Khalilov
+      changes:
+        - createTable:
+            tableName: role
+            schemaName: public
+            columns:
+              - column:
+                  name: id
+                  type: UUID
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: VARCHAR(255)
+
+  - changeSet:
+      id: 3
+      author: Eldar Khalilov
+      changes:
+        - createTable:
+            tableName: customer_role
+            schemaName: public
+            columns:
+              - column:
+                  name: customer_id
+                  type: UUID
+                  constraints:
+                    nullable: false
+              - column:
+                  name: role_id
+                  type: UUID
+                  constraints:
+                    nullable: false
+
+  - changeSet:
+      id: 4
+      author: Eldar Khalilov
+      changes:
+        - addForeignKeyConstraint:
+            baseTableName: customer_role
+            baseColumnNames: customer_id
+            constraintName: fk_customer_role_customer
+            referencedTableName: customer
+            referencedColumnNames: id
+
+  - changeSet:
+      id: 5
+      author: Eldar Khalilov
+      changes:
+        - addForeignKeyConstraint:
+            baseTableName: customer_role
+            baseColumnNames: role_id
+            constraintName: fk_customer_role_role
+            referencedTableName: role
+            referencedColumnNames: id
+
+  - changeSet:
+      id: 6
+      author: Eldar Khalilov
+      changes:
+        - createTable:
+            tableName: refresh_token
+            schemaName: public
+            columns:
+              - column:
+                  name: id
+                  type: UUID
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: customer_id
+                  type: UUID
+                  constraints:
+                    nullable: false
+              - column:
+                  name: token
+                  type: VARCHAR(255)
+              - column:
+                  name: issued_at
+                  type: TIMESTAMP
+              - column:
+                  name: expires_at
+                  type: TIMESTAMP
+
+  - changeSet:
+      id: 7
+      author: Eldar Khalilov
+      changes:
+        - addForeignKeyConstraint:
+            baseTableName: refresh_token
+            baseColumnNames: customer_id
+            constraintName: fk_refresh_token_customer
+            referencedTableName: customer
+            referencedColumnNames: id

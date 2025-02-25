@@ -1,0 +1,38 @@
+services:
+
+  fiw-auth:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: fiw-auth-service
+    environment: # locally env.
+      DB_USER: fiw-admin
+      DB_PASSWORD: fiw-tech
+      DB_URL: jdbc:postgresql://postgres:5432/fiw-auth
+      SPRING_PROFILES_ACTIVE: dev # should be changed
+    ports:
+      - "8081:8080"
+    networks:
+      - backend
+    depends_on:
+      - postgres
+
+  postgres:
+    image: postgres:17
+    container_name: fiw-auth-db
+    environment: # locally env.
+      POSTGRES_USER: fiw-admin
+      POSTGRES_PASSWORD: fiw-tech
+      POSTGRES_DB: fiw-auth
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - backend
+
+networks:
+  backend:
+
+volumes:
+  postgres_data:

@@ -1,0 +1,26 @@
+spring:
+  application:
+    name: FiW-auth-service
+    version: 0.0.1
+    system-name: f-auth
+
+  datasource:
+    url: ${DB.URL:jdbc:postgresql://postgres:5432/fiw-auth-db}
+    username: ${DB_USER:fiw-admin}
+    password: ${DB_PASSWORD:fiw-tech}
+  jpa:
+    hibernate:
+      ddl-auto: update
+  liquibase:
+    enabled: true
+    change-log: classpath:db/changelog/db.master-changelog.yaml
+
+server:
+  port: 8081
+
+logging:
+  level:
+    org:
+      hibernate:
+        SQL: debug
+    liquibase: info
